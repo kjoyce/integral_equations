@@ -1,0 +1,179 @@
+\documentclass{homework}
+\usepackage{cancel}
+\usepackage{amsthm}
+\usepackage{cleveref}
+\usepackage{upgreek}
+\usepackage[framed]{mcode}
+\usepackage{mathrsfs}
+\usepackage{tikz}
+\usepackage{units}
+\usetikzlibrary{matrix}
+\newtheorem{lemma}{Lemma}
+
+\title{Kevin Joyce}
+\course{Math 512 - Integral Equations Homework 2}
+\author{Kevin Joyce}
+\docdate{\today}
+\begin{document} 
+\newcommand{\figref}[1]{\figurename~\ref{#1}}
+\renewcommand{\bar}{\overline}
+\renewcommand{\hat}{\widehat}
+\renewcommand{\SS}{\mathcal S}
+\renewcommand{\NN}{\mathcal N}
+\newcommand{\DD}{\mathcal D}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\TTheta}{\overline{\underline \Theta} }
+\newcommand{\del}{\partial}
+\newcommand{\approxsim}{\overset{\cdotp}{\underset{\cdotp}{\sim}}}
+
+\problem{ Show that if an operator $A$ is bounded and $B$ is compact then $AB$ and $BA$ are compact operators. }
+
+\begin{solution}
+  Let $\{x_n\}$ be a bounded sequence in $\DD(A)$. Since $A$ is bounded, $\{Ax_n\}$ is bounded, and thus $\{BAx_n\}$ is compact since $B$ is a compact operator. Hence $BA$ is a compact operator.
+
+  Now, let $\{x_n\}$ be a bounded sequence in $\DD(B)$. For $\{ABx_n\}$, consider any subsequence $\{ABx_{n_k}\}$. Since $B$ is a compact operator, there is a point of accumulation of $\{Bx_{n_k}\}$, say $x$. Since $A$ is bounded, it is also continuous, and thus, $Ax$ is also a point of accumulation of $\{ABx_{n_k}\}$.  We have show that $\{ABx_n\}$ is a compact sequence, and thus $AB$ is a compact operator.
+\end{solution}
+
+\problem{ Prove that the inverse $A^{-1}$ of a compact operator $A$ in $h[a,b]$ is not bounded. }
+
+\begin{solution}
+  For $A^{-1}$ to be defined, it must be that $\Lambda = 0$ is not an eigenvalue.  Thus, we can construct eigenvalue-eigenvector pairs $\{(\Lambda_n,\phi_n)\}_{n=1}^\infty$ such that $A \phi_n = \Lambda_n \phi_n$, $\|\phi_n\| = 1$, and $\Lambda_n \not=0$ via the same arguments presented in class.  Moreover, $|\Lambda_n| \to 0$ monotonically.  Now, observe
+  $$
+    A\phi_n = \Lambda \phi_n \iff \phi_n = \lambda_n A^{-1} \phi_n \iff A^{-1}\phi_n = \left(\frac 1{\Lambda_n}\right) \phi_n,
+  $$
+  Hence, $|A^{-1}\phi_n| = |\Lambda_n^{-1}|$ diverges to $\infty$, yet $\|\phi_n\| = 1$, and thus $A^{-1}$ is not bounded.
+\end{solution}
+
+\problem{ Let $A$ be a bounded operator in a normed space $N$.  Show that its null-space $\NN(A)$ is a closed linear subspace of $N$. }
+
+\begin{solution}
+  For $y,z \in \NN(A)$, note $A(y + \alpha z) = Ay + \alpha Az = 0$, hence $\NN(A)$ is a linear subspace of $N$. Now, take a sequence $\{y_n\}$ in $\NN(A)$, so that $y_n \to y$.  Since $A$ is bounded, it is continuous, hence $Ay_n \to Ay$. However, the sequence $\{Ay_n\}$ is the constant sequence with $Ay_n = 0$, hence $Ay = 0$, and thus $y \in \NN(A)$.
+\end{solution}
+
+\problem{ Let $A$ be a self-adjoint operator.  Prove that eigenvectors corresponding to distinct eigenvalues are orthogonal. }
+
+\enlargethispage{1.5em}
+\begin{solution}
+  Let $\{(\Lambda_n,\phi_n)\}$ be the set of eigenvalue-eigenvector pairs of $A$.  Observe
+  \begin{align*}
+	 \Lambda_i(\phi_i,\phi_j) = (A\phi_i,\phi_j) = (\phi_i,A\phi_j) = \Lambda_j(\phi_i,\phi_j) \iff (\Lambda_i - \Lambda_j)\,(\phi_i,\phi_j) = 0.
+  \end{align*}
+  So if $\Lambda_i \not= \Lambda_j$, then it must be that $(\phi_i,\phi_j) = 0$.
+\end{solution}
+\newpage
+
+\problem{ For 
+$$
+  Ay = \int_0^\pi( \sin 2x \sin 2s + \sin 5x \sin 5s) y(s)\, ds\quad\text{ in }h[0,\pi]:
+$$}
+
+\subproblem{ Show that $\Lambda_0 = 0$ is an eigenvalue and find its multiplicity; }
+
+\begin{solution}
+  For any integers $0<m\le n$, observe
+  \begin{align*}
+    \int_0^{\pi} \sin(ns) \sin(ms)\,ds
+    &= \frac 12 \int_0^\pi(\cos(ns - ms) - \cos(ns + ms))ds\\
+  \renewcommand{\arraystretch}{1.5}
+    &= \begin{cases}
+      \ds{\frac 12 \left.\left(\frac {\sin((n-m)s)}{n-m} - \frac {\sin((n+m)s)}{n+m}\right) \right|_{s=0}^{\pi}} \text{ if } m<n,\\
+      \ds{\frac \pi2} \quad\text{if } m=n.
+    \end{cases}\\
+    &= \begin{cases}
+      0  \quad\text{ if } m<n\\
+      \ds{\frac \pi2} \quad\text{ if } m=n.
+    \end{cases}
+  \end{align*}
+  Therefore, if $y_n(x) = \sin(nx)$ for $|n|\not=2,5$, then $Ay_n = 0 + 0 = 0$, and each are eigenvectors corresponding to $\Lambda =0$. Hence the multiplicity is $\infty$.
+\end{solution}
+
+\subproblem{ Find all nonzero eigenvalues $\Lambda_k$ and corresponding unit eigenvectors $\phi_k(x)$, \mbox{$\|\phi_k\|=1$}. }
+
+\begin{solution}
+Let $f_1(x) = \sin(2x)$ and $f_2(x) = \sin(5x)$.  Any eigenvector $y$ satisfies
+$$
+  \Lambda y = A y = \big((f_1,y)\,f_1 + (f_2,y)\,f_2\big)
+$$
+implies
+$$
+  \Lambda (f_i,y) = \big( (f_i,f_1) (f_1,y) + (f_i,f_2) (f_2,y)\big).
+$$
+Denote $c = \Big( (y,f_1), (y,f_2) \Big)^T$ and $ M$ the $2\times 2$ matrix with coefficients $(f_i,f_j)$, so
+$$
+  \Lambda c = M c. 
+$$
+From the discussion in {\bf (a)}, $(f_i,f_j) = \frac \pi2\delta_{ij}$, so $M$ is a diagonal matrix with $\frac \pi 2$ on the diagonal. Hence $\lambda = \frac \pi 2$ is the only eigenvalue, and it has multiplicity 2. The corresponding orthonormal eigenvectors are $\phi_1(x) = \frac 2\pi \sin(2x)$ and $\phi_2(x) = \frac 2\pi\sin(5x)$.
+%
+%So, the characteristic value satisfies
+%$$
+%0 = det(I - \lambda M) = 
+%  \renewcommand{\arraystretch}{2}
+%  \left|\begin{array}{c c} 
+%  1-\ds{\frac{\lambda\pi}{2}} & 0 \\
+%  0 & 1-\ds{\frac{\lambda\pi}{2}}
+%  \end{array}\right| = \left(1-\frac{\lambda\pi}2\right)^2. 
+%$$
+%Hence $\lambda = \frac 2\pi$ with multiplicity 2.
+%  
+\end{solution}
+\newpage
+\problem{ Find characteristic values and eigenfunctions satisfying
+$$
+  y(x) = \lambda \int_{-1}^1 (xs^2 + x^2s)y(s)\, ds.
+$$}
+
+\begin{solution}
+  Let $f_1(x) = x$ and $f_2(x) = x^2$.  Note that these are linearly independent. An eigenvector $y$ satisfies
+\begin{align*}
+    y &= \lambda \left(x\int_{-1}^1 s^2y(s) \,ds + x^2 \int_{-1}^1 sy(s)\,ds\right) = \lambda \big( f_1 (f_2,y) + f_2 (f_1,y)\big)\\
+\iff(f_i,y) &= \lambda\big( (f_i,f_1) (f_2,y) + (f_i,f_2) (f_1,y)\big)= \lambda\big( (f_i,f_2) (f_1,y) + (f_i,f_1) (f_2,y)\big).
+\end{align*}
+In matrix vector form,
+$$
+  \begin{pmatrix}
+    (f_1,y)\\
+    (f_2,y)
+  \end{pmatrix}
+   = \lambda \begin{pmatrix}
+  (f_1,f_2) & (f_1,f_1) \\
+  (f_2,f_2) & (f_2,f_1) \\
+  \end{pmatrix} 
+  \begin{pmatrix}
+    (f_1,y)\\
+    (f_2,y)
+  \end{pmatrix}
+  \iff
+  c = \lambda M c.
+$$
+We need only calculate three inner products.  That is
+\begin{align*}
+  (f_1,f_1) &= \int_{-1}^1 x^2\,dx = \frac 23,\\
+  (f_2,f_1) = (f_1,f_2) &= \int_{-1}^1 x^3\,dx = 0,\\
+  (f_2,f_2) &= \int_{-1}^1 x^4\,dx = \frac 25.
+\end{align*}
+The characteristic values satisfy
+$$
+\renewcommand{\arraystretch}{2}
+  \left|M - \frac 1\lambda I\right| 
+  = \left|\begin{array}{ccc}
+    -\frac 1\lambda & \frac 23 \\
+    \frac 25 & -\frac 1\lambda \\
+  \end{array}
+  \right|
+  = 0 \iff \frac 1{\lambda^2} - \frac 4{15} = 0 \iff \lambda_{1,2} = \pm \frac{\sqrt{15}}2.
+$$
+For $\lambda_1 = \frac{\sqrt{15}}2$, a corresponding eigenvector has coordinates satisfying
+$$
+  \frac{2}{\sqrt{15}}(f_1,y) = \frac 23 (f_2,y),
+$$
+so if $(f_1,y) = \sqrt{15}$ and $(f_2,y) = 3$, then $y_1 = 3x + \sqrt{15} x^2$.
+
+For $\lambda_1 = -\frac{\sqrt{15}}2$, a corresponding eigenvector has coordinates satisfying
+$$
+  \frac{2}{\sqrt{15}}(f_1,y) = -\frac 23 (f_2,y),
+$$
+so if $(f_1,y) = -\sqrt{15}$ and $(f_2,y) = 3$, then $y_1 = 3x - \sqrt{15} x^2$.
+
+\end{solution}
+\end{document} 
+
