@@ -1,0 +1,90 @@
+\documentclass{homework}
+\usepackage{cancel}
+\usepackage{amsthm}
+\usepackage{cleveref}
+\usepackage{upgreek}
+\usepackage[framed]{mcode}
+\usepackage{mathrsfs}
+\usepackage{tikz}
+\usepackage{units}
+\usetikzlibrary{matrix}
+\newtheorem{lemma}{Lemma}
+
+\title{Kevin Joyce}
+\course{Math 512 - Integral Equations Homework 3}
+\author{Kevin Joyce}
+\docdate{\today}
+\begin{document} 
+\newcommand{\figref}[1]{\figurename~\ref{#1}}
+\renewcommand{\bar}{\overline}
+\renewcommand{\hat}{\widehat}
+\renewcommand{\SS}{\mathcal S}
+\renewcommand{\NN}{\mathcal N}
+\newcommand{\DD}{\mathcal D}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\TTheta}{\overline{\underline \Theta} }
+\newcommand{\del}{\partial}
+\newcommand{\approxsim}{\overset{\cdotp}{\underset{\cdotp}{\sim}}}
+
+\problem{Show that any contraction operator $A$ is:
+\begin{enumerate}[(a)]
+  \item Continuous, i.e. for any convergent sequence $y_n\to y$ the sequence $A y_n \to Ay$;
+  \item ``Bounded'' in the following sense: for any bounded sequence $y_n$ the sequence $Ay_n$ is bounded.
+\end{enumerate}}
+
+\begin{solution}[(a)]
+  Let $0\le c < 1$  such that $\|Ay_n - Ay\| \le c\|y_n - y\|$ given by $A$ a contraction.  Hence $\|Ay_n - Ay\| \to 0$ at least as fast as $\|y_n - y\|\to 0$.
+\end{solution}
+
+\begin{solution}[(b)]
+  Let $\|y_n\| \le B$ for all $n$ and $c$ as above.  Then 
+  $$
+    \|Ay_n\| = \|Ay_n -A0 + A0\| \le \|Ay_n - A0\| + \|A0\| \le cB + \|A0\|.
+  $$
+\end{solution}
+
+\problem{ Construct the Neumann series for the Volterra equation of the second kind
+$$
+  y(x) = \lambda \int_0^x y(s) ds + 1
+$$
+and find the solution.}
+
+\begin{solution}
+  Let $A$ be the integral operator given by $Ay = \int_0^x y(s)ds$. The Neumann series is given by 
+  $$
+    y_n = \sum_{k=0}^{n-1} \frac{(x\lambda)^k}{k!}.
+  $$
+  To see this, the inductive step is given by
+  $$
+    y_{n+1} = \lambda \int_0^x y_n ds + 1 = \lambda \int_0^x \sum_{k=0}^{n-1} \frac{(x\lambda)^k}{k!}ds + 1 = \lambda \sum_{k=0}^{n-1} \frac{\lambda^k s^{k+1}}{(k+1)!} + 1 = \sum_{k=0}^n \frac{(x\lambda)^k}{k!}.
+  $$
+  This is precisely the series for $e^{\lambda x}$.
+\end{solution}
+
+\problem{ Construct the resolvent kernel for the equation in Problem 2 and use it to find the solution. }
+
+\begin{solution}
+  The $n$th term for resolvent kernel is given by
+  $$
+    K_n(x,s) = \frac{(x-s)^{n-1}}{(n-1)!}.
+  $$
+  To see this, the inductive step is 
+  $$
+    K_{n+1}(x,s) = \int_s^x K_n(x,t) 1\,dt = \int_s^x \frac{(x-t)^{n-1}}{(n-1)!}dt = \left.-\frac{(x-t)^{n}}{n!}\right|_{t=s}^x = \frac{(x-s)^{n}}{n!}.
+  $$
+  Note that $\sum \lambda^{n-1} K_n$ converges absolutely and uniformly to $e^{\lambda(x-s)}$, hence the solution is given by
+  $$
+    y = 1 + \lambda R_\lambda\,1 = 1 + \lambda \int_0^x e^{\lambda(x-s)}\,1\,ds = 1 + \lambda e^{\lambda x} \left(\left.\frac {-1}\lambda e^{-\lambda s}\right|_{s=0}^x\right) = e^{\lambda x}.
+  $$
+\end{solution}
+
+\problem{ Reduce the equation in Problem 2 to a Cauchy problem and find the solution. }
+\begin{solution}
+  By differentiating both sides of the equation and noting $y(0) = 1$, we see that the problem is equivalent to the ordinary differential equation
+  $$
+    y' = \lambda y,\quad y(0) = 1.
+  $$
+  By inspection, this simple equation has the solution $y(x) = e^{\lambda x}$.
+\end{solution}
+\end{document} 
+
