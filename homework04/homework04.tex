@@ -1,0 +1,227 @@
+\documentclass{homework}
+\usepackage{cancel}
+\usepackage{amsthm}
+\usepackage{cleveref}
+\usepackage{upgreek}
+\usepackage[framed]{mcode}
+\usepackage{mathrsfs}
+\usepackage{tikz}
+\usepackage{units}
+\usetikzlibrary{matrix}
+\newtheorem{lemma}{Lemma}
+
+\title{Kevin Joyce}
+\course{Math 512 - Integral Equations Homework 4}
+\author{Kevin Joyce}
+\docdate{\today}
+\begin{document} 
+\newcommand{\figref}[1]{\figurename~\ref{#1}}
+\renewcommand{\bar}{\overline}
+\renewcommand{\hat}{\widehat}
+\renewcommand{\SS}{\mathcal S}
+\renewcommand{\NN}{\mathcal N}
+\newcommand{\DD}{\mathcal D}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\del}{\partial}
+
+\problem{Construct the Neumann series for the Fredholm equation of the second kind
+$$
+  y(x) = \lambda \int_0^1y(s)\,ds + f(x)
+$$
+for ``small'' $\lambda$ and $f(x)= 1$ and find the solution.
+}
+
+\begin{solution}
+  Let $A$ be the integral operator $\int_0^1 \cdot\, ds$. For small enough $\lambda$, the map $y\to \lambda Ay + f$ is a contraction whose fixed point is the solution and is given by repeated composition to an arbitrary function $y_0$.  Successive applications of this map to $y_0 = 0$ yields the Neumann series
+  \begin{equation}
+    y_n = f + \lambda Af + \lambda^2 A^2 f + \dots + \lambda^n A^n f. \label{neumann}
+  \end{equation}
+  Note that
+  \begin{equation}
+    A^n f = \int_0^1 \dots \int_0^1 1 ds = 1. \label{kern1}
+  \end{equation}
+  So
+  $$
+    y = \lim_{n\to\infty} y_n = \sum_{k=0}^\infty \lambda^k = \frac{1}{1-\lambda}
+  $$
+  for $|\lambda| < 1$.
+
+  We can easily verify that $y$ is a solution,
+  $$
+    y = \frac{1}{1-\lambda} = \frac{\lambda + 1 - \lambda}{1-\lambda} = \lambda \frac{1}{1-\lambda} + 1 = \lambda A y + f.
+  $$
+  \end{solution}
+
+\problem{ Construct the resolvent kernel for the above equation using various approaches: }
+
+  \subproblem{Assume that $\lambda$ is ``small''. For what $\lambda$ does the series for the resolvent kernel converge? }
+
+\begin{solution}
+  We take $f \in C[0,1]$. Observe that $ \|Ay\| \le \|y\|(1-0) =
+  \|y\|$ and $\|A 1\| = 1$, hence $\|A\| = 1$.  Therefore, absolute
+  and uniform convergence in \eqref{neumann} is guaranteed when
+  $\|A\||\lambda|=|\lambda|<1$. Taking the limit in
+  \eqref{neumann}, using the result that $A^n$ is an integral operator with a given kernel $k_n$, and interchanging $\int$ with $\sum$, the
+  resolvent operator is given by
+  \begin{equation}
+  y = f + \lambda \int_0^1 \sum_{n=0}^\infty \lambda^n k_{n+1}(x,s) f(s) ds \label{neumann_res}
+  \end{equation}
+  Using similar reasoning as in \eqref{kern1}, terms in the series of the resolvent kernel are given by 
+$$
+    \lambda^n k_{n+1}(x,s) = \lambda^n \int_0^1 k_n(x,s)k_n(s,x) = \lambda^n \cdot 1,
+  $$
+  Continuing from \eqref{neumann_res}, the resolvent is
+  \begin{equation}
+  y = f +  \frac{\lambda}{1-\lambda} \int_0^1 f(s) ds. \label{neumann_resolv}
+  \end{equation}
+\end{solution}
+
+  \subproblem{Use the fact that the kernel is symmetric and express the resolvent through the characteristic values and eigenfunctions.}
+
+  \begin{solution}
+    The characteristic values and eigenfunctions of $A$ satisfy
+    $$
+      \lambda \int_0^1 \phi_k(s)\, ds = \phi_k(x).
+    $$
+    Hence all the eigenfunctions for $A$ are constant functions, and the one orthonormal
+    eigenfunction is $\phi_1(x) = 1$ with characteristic value $\lambda_1 = 1$. 
+    
+    Following the procedure outlined in Lecture 8, for $\lambda \not= \lambda_1 = 1$, the unique solution to
+    $$
+      y = \lambda A y + f
+    $$
+    is given by
+    $$
+      y(x) = f(x) +  \lambda \int_0^1 \sum_{k=1}^\infty \frac {\phi_k(s)\phi_k(x)}{\lambda_k-\lambda} f(s)\, ds = f(x) + \frac{\lambda}{1-\lambda} \int_0^1 f(s) ds.
+    $$
+    Note that this agrees with \eqref{neumann_res} and extends it to $\lambda > 1$.
+
+    If $\lambda = 1$, then there are two cases to consider.  First, if $f$ is orthogonal to $1$, i.e.  $ \int_0^1 f(s)\, ds = 0 $, then $y = f$ since $Af = 0$.  Note that these are not unique. If $f$ is not orthogonal to $1$, then there is no solution.
+    \end{solution}
+
+  \subproblem{Use the fact that the kernel is degenerate.}
+
+  \begin{solution}
+    Since the kernel is degenerate, we can reduce the problem by setting $c = \int_0^1 y(s)ds$, then integrating both sides of the problem. We get
+    $$
+      c = \int_0^1 \lambda c + f(s) ds = \lambda c + f_1.
+    $$
+    where $f_1 = \int_0^1f(s)ds$. Solving this simple linear equation for $c$ when $\lambda \not= 1$, we have $c = (1 - \lambda)^{-1} f_1 $
+    so 
+    \begin{equation}
+      y = \lambda c + f = \frac{\lambda}{1-\lambda} \int_0^1 f(s) ds + f.
+    \end{equation}
+    Note that this agrees with the previous results.
+
+    When $\lambda =1$, we have the condition that $f_1 = 0$.  So there is no solution when $f_1 \not=0$, and non-unique solutions $y = c + f$ otherwise.  This coincides with the symmetric kernel analysis.
+    \vspace{-1em}
+  \end{solution}
+  \newpage
+
+\problem{Analyze the equation 
+$$
+  y(x) = \lambda \int_{-1}^1 (2xs^3 + 5x^2s^2)y(s)\, ds + 7x^4 + 3
+$$
+and solve it for any $\lambda$.
+}
+
+\begin{solution}
+  Let $A$ denote the integral operator above and $f(x) = 7x^4+3$.  Note that the kernel is degenerate; i.e. it is of the form $\sum_{i=1}^2 a_i(x)b_i(s)$ where $a_1(x) = 2x$, $b_1(s) =  s^3$, $a_2(x)=5x^2$, and $b_2(s)=s^2$. 
+  Hence, solutions are of the form
+  \begin{equation}
+    y(x) = \lambda a_1(x) \Big(y,b_1\Big) + \lambda a_2(x)\Big(y,b_2\Big) + f(x), \label{solution_form}\\
+  \end{equation}
+  where $\Big( \cdot,\cdot\Big)$ denotes the integral inner product.
+
+  Taking integral inner products on both sides of \eqref{solution_form} by $b_1$ and $b_2$, we have,
+  \begin{equation}
+  \left.
+  \begin{array}{rl}
+    \Big(y,b_1\Big) &= \lambda \Big(a_1,b_1\Big)\Big(y,b_1\Big) + \lambda \Big(a_2,b_1\Big)\Big(y,b_2\Big) + \Big(f,b_1\Big)\\
+    \Big(y,b_2\Big) &= \lambda \Big(a_1,b_2\Big)\Big(y,b_1\Big) + \lambda \Big(a_2,b_2\Big)\Big(y,b_2\Big) + \Big(f,b_2\Big)
+    \end{array}
+  \right\} \label{system}
+  \end{equation}
+  if and only if
+  $$
+    Y = \lambda KY + F,
+  $$
+  where $Y,K$ and $F$ are the obvious vectors/matrices of inner products.  The entries of $K$ and $F$ are
+  $$
+    \renewcommand{\arraystretch}{2}
+    K = \begin{bmatrix}
+	\Big(a_1,b_1\Big) & \Big(a_2,b_1\Big)\\
+	\Big(a_1,b_2\Big) & \Big(a_2,b_2\Big)\\
+    \end{bmatrix}
+    =
+     \begin{bmatrix}
+	\int_{-1}^12\,x^4dx  & \int_{-1}^15\,x^5dx\cr 
+	\int_{-1}^12\,x^3 dx  & \int_{-1}^15\,x^4 dx\cr 
+     \end{bmatrix}
+    =
+      \begin{bmatrix}
+	{\displaystyle \frac{4}{5}}&0\cr 0&2\cr
+      \end{bmatrix}, 
+  $$
+  and
+  $$
+    \renewcommand{\arraystretch}{2}
+    F = 
+	\begin{bmatrix}
+	 \Big(f,b_1\Big) \\
+	 \Big(f,b_2\Big) 
+	\end{bmatrix} 
+      =
+	\begin{bmatrix}
+	  \int_{-1}^17\,s^7+3\,s^3ds\cr 
+	  \int_{-1}^17\,s^6+3\,s^2ds\cr 
+	\end{bmatrix} 
+      =
+	\begin{bmatrix}
+	 0\\
+	 4
+	\end{bmatrix}.
+  $$
+  Thus, \eqref{system} reduces to
+  \begin{equation}
+  \left.
+  \begin{array}{rl}
+    \Big(y,b_1\Big) &= \frac 45\lambda \Big(y,b_1\Big)\\
+    \Big(y,b_2\Big) &= 2\lambda  \Big(y,b_2\Big) + 4
+    \end{array}
+  \right\}. \label{reduced_system}
+  \end{equation}
+
+  When $\lambda = \frac54$, the value of $\Big(y,b_1\Big) = c$ is arbitrary and $\Big(y,b_2\Big) = -\frac 83$, and from \eqref{solution_form} we can write the non-unique solutions as 
+  $$
+    y(x) = c \frac 52 x  -  \frac {50}3 x^2 + 7x^4 +3.
+  $$
+
+  When $\lambda = \frac 12$, then \eqref{reduced_system} gives rise the contradiction $0=4$, and there is no solution.
+
+  When $\lambda\not= \frac 54$ and $\lambda\not= \frac 12$, the coefficients in $Y$ are given by
+  $$
+    \renewcommand{\arraystretch}{2.5}
+    Y = (I-\lambda K)^{-1} F = 
+    \begin{bmatrix}
+      {\displaystyle \frac{1}{1-  \frac 45\lambda}} & 0\\
+      0 & {\displaystyle \frac{1}{1-  2\lambda}}\\
+    \end{bmatrix}
+    \begin{bmatrix}
+     0\\
+     4
+    \end{bmatrix}
+      = 
+    \begin{bmatrix}
+      0\\
+      {\displaystyle \frac{4}{1-  2\lambda}}\\
+    \end{bmatrix}
+  $$
+  and finally substituting into \eqref{solution_form} gives
+  \begin{align*}
+    y(x) = \frac{4\lambda }{1-  2\lambda} 5x^2 + 7x^4 + 3.
+  \end{align*}
+\end{solution}
+\end{document} 
+
+
