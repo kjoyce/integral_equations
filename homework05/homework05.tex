@@ -1,0 +1,145 @@
+\documentclass{homework}
+\usepackage{cancel}
+\usepackage{amsthm}
+\usepackage{cleveref}
+\usepackage{upgreek}
+\usepackage[framed]{mcode}
+\usepackage{mathrsfs}
+\usepackage{tikz}
+\usepackage{units}
+\usetikzlibrary{matrix}
+\newtheorem{lemma}{Lemma}
+
+\title{Kevin Joyce}
+\course{Math 512 - Integral Equations Homework 4}
+\author{Kevin Joyce}
+\docdate{\today}
+\begin{document} 
+\newcommand{\figref}[1]{\figurename~\ref{#1}}
+\renewcommand{\bar}{\overline}
+\renewcommand{\hat}{\widehat}
+\renewcommand{\SS}{\mathcal S}
+\renewcommand{\NN}{\mathcal N}
+\newcommand{\DD}{\mathcal D}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\del}{\partial}
+
+\problem{ Check the possibility of reducing the Sturm-Liouville problem
+$$
+  \begin{cases}
+    y'' + \lambda e^{2x}y = 0,\quad0<x<1\\
+    y(0) = 0,\quad y'(1)=0
+  \end{cases}
+$$
+to a Fredholm equation with symmetric kernel and find this equation.
+}
+
+\begin{solution}
+Consider the corresponding homogeneous problem
+\begin{equation}
+  \begin{cases}
+    y'' = Ly = 0,\quad0<x<1\\
+    y(0) = 0,\quad y'(1)=0.
+  \end{cases} \label{homo1}
+\end{equation}
+which implies $y(x) = c_1 x + c_2$, for which $y(0) = c_2 = 0$ and $y'(1) = c_1 = 0$, so $y\equiv 0$. Thus, the solution to \eqref{homo1} is uniquely $0$ which implies that there is a Green's function, $G(x,s)$, satisfying
+\begin{equation}
+  y(x) = -\lambda \int_0^1 G(x,s) e^{2s}y(s)\,ds. \label{non-sym}
+\end{equation}
+Such a $G(x,s)$ can be written
+$$
+G(x,s) = \begin{cases}
+  y_1(x),& 0\le x\le s \le 1\\
+  y_2(x),& 0\le s< x \le 1.
+\end{cases}
+$$
+$G(x,s)$ must satisfy \eqref{homo1} in $x$, so $y_1(x) = c_1(s) x + c_2(s)$ and $y_2(x) = c_3(s) x + c_4(s)$.  The boundary conditions imply $0=G(0,s) = y_1(0) = c_2(s)$ and $0=G_x(1,s) = y_2'(1) = c_3(s)$. In summary,
+$$
+G(x,s) = \begin{cases}
+  c_1(s) x,& 0\le x\le s \le 1\\
+  c_4(s),& 0\le s< x \le 1.
+\end{cases}
+$$
+The ``diagonal-jump'' condition implies $G_x(x,s)|_{x=s^+} - G_x(x,s)|_{x=s^-} = c_1(s) - 0 = 1$. Symmetry of $G(x,s)$ implies that $y_1(s) = y_2(s) = c_4(s)$, so $c_4(s) = s$. In summary,
+$$
+G(x,s) = \begin{cases}
+  x,& 0\le x\le s \le 1\\
+  s,& 0\le s< x \le 1.
+\end{cases}.
+$$
+The kernel $G(x,s)e^{2s}$ is not symmetric. However, using the same ``trick'' used  in class, \eqref{non-sym} is equivalent to the symmetric Fredholm problem
+$$
+  \phi(x) = -\lambda \int_0^1 e^x G(x,s) e^{s} \,\phi(s)\,ds. 
+$$
+where $y$ can be recovered from $\phi(x) = y(x) e^x$.
+
+\end{solution}
+\newpage
+\problem{ Find characteristic values and eigenfunctrions for the Fredholm equation
+$$
+  y(x) = \lambda \int_0^1 K(x,s)y(s)\,ds,
+$$
+where
+$$
+  K(x,s) = \begin{cases}
+    1-s,&0\le x \le s\le 1,\\
+    1-x,&0\le s\le x\le1
+  \end{cases}
+$$
+by reducing it to a Sturm-Liouville problem.
+}
+
+\begin{solution}
+Note that $y$ satisfies  
+\begin{align*}
+  y(x)  &= \lambda \int_x^1 (1-s) y(s)\,ds + \lambda (1-x)\int_0^x y(s)\,ds\\
+  y'(x) &= \cancel{-\lambda (1-x)y(x) + \lambda(1-x)y(x)} - \lambda\int_0^x y(s)\,ds\\
+  y''(x) &= - \lambda y(x).\\
+\end{align*}
+Moreover,
+\begin{align*}
+  y(0) &= \lambda\int_0^1(1-s)y(s)\,ds\quad\text{and}\quad y(1) = 0+0 =0.\\
+  y'(0) &= 0\quad\text{and}\quad y'(1) = -\lambda\int_0^1y(s)\,ds.\\
+\end{align*}
+At least, $y$ must satisfy the system
+$$
+  \begin{cases} 
+  y'' = -\lambda y\quad 0< x < 1\\
+  y(1) = 0\quad y'(0)=0.
+  \end{cases}
+$$
+If $\lambda > 0$, solutions to this system are given by
+\begin{align*}
+  &\begin{cases}
+  y(x) = c_1 \cos(\sqrt\lambda x) + c_2 \sin(\sqrt\lambda x)\\
+  y(1) = c_1 \cos\sqrt\lambda + c_2\sin\sqrt\lambda = 0\quad 
+  y'(0) = \sqrt\lambda c_2 = 0\\
+  \end{cases}
+\end{align*}
+implies that $\lambda_m = \left(\frac{m\pi}2\right)^2$ for odd $m$, with corresponding eigenfuctions $y_m(x) = c \cos \left(\sqrt{\lambda_m} x\right)$. 
+
+If $\lambda < 0$, then set $\omega^2 = -\lambda$, and solutions satisfy
+\begin{align*}
+  &\begin{cases}
+  y(x) = c_1 e^{\omega x} + c_2e^{-\omega x}\\
+  y(1) = c_1 e^\omega + c_2e^\omega = 0\quad 
+  y'(0) = c_1 \omega - c_2 \omega = 0\\
+  \end{cases}
+\end{align*}
+which only holds when $c_1 = c_2 = 0$.  Thus, there are no negative characteristic values.
+
+Note that these solutions are, in fact, sufficient since
+$$
+y_m'(1) = - c \lambda_m \sin \left(\sqrt{\lambda_m} x\right) = -\lambda_m \int_0^1 y_m(s)ds
+$$
+and 
+\begin{align*}
+c \lambda_m\int_0^1(1-s)\cos\left(\sqrt{\lambda_m} x\right)\,ds 
+&= c\lambda_m\cancel{ \left. \frac{(1-s) \sin(\sqrt{\lambda_m} s)}{\sqrt{\lambda_m}}\right|_0^1} + \frac{c\lambda_m}{\sqrt{\lambda_m}} \int_0^1 \sin\left(\sqrt{\lambda_m} s\right)\,ds\\
+&=  -\frac{c\lambda_m}{\lambda_m} \left.\cos\left(\sqrt{\lambda_m} s\right)\right|_0^1\\
+&=  c.
+\end{align*}
+\end{solution}
+\end{document} 
+
+
