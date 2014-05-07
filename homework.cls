@@ -1,0 +1,1 @@
+/home/kjoyce/texmf/tex/homework.cls

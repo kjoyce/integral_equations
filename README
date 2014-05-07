@@ -1,0 +1,13 @@
+# Homework solutions for a course in Integral Equations
+# Kevin Joyce
+# Spring 2014
+
+This repository contains LaTeX source and compiled .pdf's for homework assignments in a Spring 2014 course on integral equations taught by visiting professor Dr. Peter Golubstov, Moscow State University.  Also, contained in some directories are Macsima source codes for verifying certain tedious symbolic computations.
+
+To compile these files you will need the files:
+
+assessment.cls
+homework.cls
+cmacros.sty
+
+in the directory of the document source or in TeX source directory (as is the case for my compiled versions).
